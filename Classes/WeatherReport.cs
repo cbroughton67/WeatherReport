@@ -11,10 +11,10 @@ namespace WeatherApp
 {
     public class WeatherReport
     { 
-        public async Task<dynamic> GetWeather()
+        public async Task<dynamic> GetForecast(string city)
         {
             var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Louisville?key=UTETUQF62KSYHT42GZJ248MJ2");
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/" + city + "?key=UTETUQF62KSYHT42GZJ248MJ2");
             //var request = new HttpRequestMessage(HttpMethod.Get, "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/here?key=UTETUQF62KSYHT42GZJ248MJ2");
 
             try
@@ -26,7 +26,7 @@ namespace WeatherApp
                 dynamic weather = JsonConvert.DeserializeObject(body);
                 return weather;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
