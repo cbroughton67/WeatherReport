@@ -11,33 +11,15 @@ namespace WeatherApp
         static async Task Main(string[] args)
         {
             string selection;
-            bool doItAgain = true;
+            bool doItAgain;
             WeatherReport forecast = new();
-            dynamic weather = null;
+            dynamic weather;
+            Task<string> pickCity;
+            string city;
 
-            do
-            {
-                string city = Display.SelectCity().Trim();
+            pickCity = SelectCity();
+            city = pickCity.Result;
 
-                if (city.ToUpper() != "X")
-                {
-
-                    weather = await forecast.GetForecast(city);
-
-                    if (weather == null)
-                    {
-                        Console.WriteLine("No weather data was returned.\nCheck location and try again\nor X to quit.");
-                    }
-                    else
-                    {
-                        doItAgain = false;  
-                    }
-                } 
-                else
-                {
-                    doItAgain = false;
-                }
-            } while (doItAgain == true);
 
             do
             {
@@ -52,20 +34,30 @@ namespace WeatherApp
                         break;
 
                     case "2":
-
                         Console.WriteLine("\n");
+                        weather = await forecast.GetForecast(city);
                         Display.ShowForecast(weather);
                         doItAgain = true;
                         break;
 
                     case "3":
-                        //Console.WriteLine("\n" + GetWeatherHistory());
+                        weather = await forecast.GetWeatherHistory(city);
+                        Display.ShowForecast(weather);
                         doItAgain = true;
                         break;
 
                     case "4":
-                        //Console.WriteLine("\n" + SelectCity());
-                        doItAgain = true;
+                        pickCity = SelectCity();
+                        city = pickCity.Result;
+
+                        if (city == String.Empty)
+                        {
+                            doItAgain = false;
+                        }
+                        else
+                        {  
+                            doItAgain = true;
+                        }
                         break;
 
 
@@ -79,35 +71,54 @@ namespace WeatherApp
                         break;
                 }
 
-                if (doItAgain == true)
-                {
-                    Console.WriteLine("Press a key to continue...");
-                    Console.ReadKey();
-                }
+                //if (doItAgain == true)
+                //{
+                //    Console.WriteLine("Press a key to continue...");
+                //    Console.ReadKey();
+                //}
 
             }
             while (doItAgain == true);
 
-
-
-            //Console.WriteLine("Please enter the name of a city or a postal code: ");
-            //string city = Console.ReadLine();
-
-            //WeatherReport forecast = new();
-            //dynamic weather = await forecast.GetForecast(city.Trim());
-
-            //if (weather == null)
-            //{
-            //    Console.WriteLine("No weather data was returned. Check location and try again.");
-            //}
-            //else
-            //{
-            //    Display.ShowForecast(weather);
-            //}
         }
 
 
+        private static async Task<string> SelectCity()
+        {
+            bool doItAgain = true;
+            string city;
+            WeatherReport forecast = new();
+            dynamic weather;
 
+            do
+            {
+                city = Display.SelectCity().Trim();
+
+                if (city.ToUpper() != "X")
+                {
+
+                    weather = await forecast.GetForecast(city);
+
+                    if (weather == null)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("No weather data was returned.\nCheck location and try again\nor X to quit.");
+                        doItAgain = true;
+                    }
+                    else
+                    {
+                        doItAgain = false;
+                    }
+                }
+                else
+                {
+                    doItAgain = false;
+                    city = String.Empty;
+                }
+            } while (doItAgain == true);
+
+            return city;
+        }
     
 
            
