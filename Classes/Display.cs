@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WeatherApp
 {
@@ -11,7 +7,12 @@ namespace WeatherApp
         public static void ShowForecast(dynamic forecastData)
         {
             Console.Clear();
+            Console.WriteLine("****************************************************************");
+            Console.WriteLine("*****                    WEATHER MONKEY                    *****");
+            Console.WriteLine("****************************************************************");
+            Console.WriteLine();
             Console.WriteLine("Forecast for: " + forecastData.resolvedAddress);
+            Console.WriteLine();
             Console.WriteLine("Date\t\tHigh(F)\tLow(F)\tPrecip(%)\tConditions");
 
             foreach (var day in forecastData.days)
@@ -23,7 +24,7 @@ namespace WeatherApp
             Console.ReadKey();
         }
 
-        public static string CreateMenu()
+        public static string CreateMenu(string Location)
         {
             string valueEntered;
 
@@ -33,13 +34,16 @@ namespace WeatherApp
                 Console.WriteLine("****************************************************************");
                 Console.WriteLine("*****                    WEATHER MONKEY                    *****");
                 Console.WriteLine("****************************************************************");
-                Console.WriteLine("Choose an option:");
-                Console.WriteLine("1) Display Current Conditions");
-                Console.WriteLine("2) Display 14 Day Forecast");
-                Console.WriteLine("3) Display Previous 14 Days Weather");
-                Console.WriteLine("4) Change City");
-                Console.WriteLine("X) Exit Program");
-                Console.Write("\r\nSelect an option: ");
+                Console.WriteLine("\tCurrent Location: " + Location);
+                Console.WriteLine("****************************************************************");
+                Console.WriteLine();
+                Console.WriteLine("\tChoose an option:");
+                Console.WriteLine("\t1) Display Current Conditions");
+                Console.WriteLine("\t2) Display 14 Day Forecast");
+                Console.WriteLine("\t3) Display Previous 14 Days Weather");
+                Console.WriteLine("\t4) Change City");
+                Console.WriteLine("\tX) Exit Program");
+                Console.Write("\r\n\tSelect an option: ");
 
                 valueEntered = Convert.ToString(Console.ReadKey().KeyChar);
             }
@@ -53,64 +57,42 @@ namespace WeatherApp
             return valueEntered;
         }
 
-        //public static void PeformSelectedMenuOption(string selection)
-        //{
-        //    bool doItAgain = true;
-
-        //    do
-        //    {
-        //        switch (selection)
-        //        {
-        //            case "1":
-        //                //Console.WriteLine("\n" + CurrentConditions());
-        //                doItAgain = true;
-        //                break;
-
-        //            case "2":
-        //                Console.WriteLine("\n" + ShowForecast());
-        //                doItAgain = true;
-        //                break;
-
-        //            case "3":
-        //                Console.WriteLine("\n" + GetWeatherHistory());
-        //                doItAgain = true;
-        //                break;
-
-        //            case "4":
-        //                Console.WriteLine("\n" + SelectCity());
-        //                doItAgain = true;
-        //                break;
-
-
-        //            case "X":
-        //            case "x":
-        //                doItAgain = false;
-        //                break;
-
-        //            default:
-        //                doItAgain = true;
-        //                break;
-        //        }
-
-        //        if (doItAgain == true)
-        //        {
-        //            Console.WriteLine("Press a key to continue...");
-        //            Console.ReadKey();
-        //        }
-
-        //    }
-        //    while (doItAgain == true);
-        //}
-
-        public static string SelectCity()
+        public static string PromptForCity()
         {
             string city;
-            Console.WriteLine("\nPlease enter a city name or postal code:");
+            Console.Clear();
+            Console.WriteLine("****************************************************************");
+            Console.WriteLine("*****                    WEATHER MONKEY                    *****");
+            Console.WriteLine("****************************************************************");
+            Console.WriteLine();
+            Console.WriteLine("Please enter a city name or postal code (or X to quit):");
             city = Console.ReadLine();
 
             return city;
         }
 
+
+        public static void ShowCurrentConditions(dynamic forecastData)
+        {
+            Console.Clear();
+            Console.WriteLine("****************************************************************");
+            Console.WriteLine("*****                    WEATHER MONKEY                    *****");
+            Console.WriteLine("****************************************************************");
+            Console.WriteLine("\tCurrent Conditions for: " + forecastData.resolvedAddress);
+            Console.WriteLine("****************************************************************");
+            Console.WriteLine();
+
+            Console.WriteLine("\tCurrent Temp: \t\t" + forecastData.currentConditions.temp + "(F)");
+            Console.WriteLine("\tPrecipitation: \t\t" + forecastData.currentConditions.precip + "in");
+            Console.WriteLine("\tWind Speed: \t\t" + forecastData.currentConditions.windspeed + "mph");
+            Console.WriteLine("\tWind Direction: \t" + forecastData.currentConditions.winddir + " degrees");
+            Console.WriteLine("\tVisibility: \t\t" + forecastData.currentConditions.visibility + " miles");
+            Console.WriteLine("\tPressure: \t\t" + forecastData.currentConditions.pressure + " millibars");
+            Console.WriteLine("\tCurrent Conditions: \t" + forecastData.currentConditions.conditions); 
+
+            Console.WriteLine("\n\tPress any key to continue.");
+            Console.ReadKey();
+        }
     }
 
 

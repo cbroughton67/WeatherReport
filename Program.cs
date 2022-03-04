@@ -11,46 +11,50 @@ namespace WeatherApp
         static async Task Main(string[] args)
         {
             string selection;
-            bool doItAgain;
+            bool doItAgain = true;
             WeatherReport forecast = new();
             dynamic weather;
             Task<string> pickCity;
-            string city;
-
+            
             pickCity = SelectCity();
-            city = pickCity.Result;
-
-
-            do
+            forecast.City = pickCity.Result;
+            
+            if(forecast.City == string.Empty)
+            {
+                doItAgain = false;
+            }
+    
+            while (doItAgain == true)
             {
 
-                selection = Display.CreateMenu();
+                selection = Display.CreateMenu(forecast.City);
 
                 switch (selection)
                 {
                     case "1":
-                        //Console.WriteLine("\n" + CurrentConditions());
+                        weather = await forecast.GetForecast();
+                        Display.ShowCurrentConditions(weather);
                         doItAgain = true;
                         break;
 
                     case "2":
-                        Console.WriteLine("\n");
-                        weather = await forecast.GetForecast(city);
+                        //Console.WriteLine("\n");
+                        weather = await forecast.GetForecast();
                         Display.ShowForecast(weather);
                         doItAgain = true;
                         break;
 
                     case "3":
-                        weather = await forecast.GetWeatherHistory(city);
+                        weather = await forecast.GetWeatherHistory();
                         Display.ShowForecast(weather);
                         doItAgain = true;
                         break;
 
                     case "4":
                         pickCity = SelectCity();
-                        city = pickCity.Result;
+                        forecast.City = pickCity.Result;
 
-                        if (city == String.Empty)
+                        if (forecast.City == String.Empty)
                         {
                             doItAgain = false;
                         }
@@ -71,14 +75,8 @@ namespace WeatherApp
                         break;
                 }
 
-                //if (doItAgain == true)
-                //{
-                //    Console.WriteLine("Press a key to continue...");
-                //    Console.ReadKey();
-                //}
-
             }
-            while (doItAgain == true);
+            //while (doItAgain == true);
 
         }
 
@@ -86,41 +84,42 @@ namespace WeatherApp
         private static async Task<string> SelectCity()
         {
             bool doItAgain = true;
-            string city;
             WeatherReport forecast = new();
             dynamic weather;
+            Console.Clear();
 
             do
             {
-                city = Display.SelectCity().Trim();
+                forecast.City = Display.PromptForCity().Trim();
 
-                if (city.ToUpper() != "X")
+                if (forecast.City.ToUpper() != "X")
                 {
 
-                    weather = await forecast.GetForecast(city);
+                    weather = await forecast.GetForecast();
 
                     if (weather == null)
                     {
                         Console.Clear();
-                        Console.WriteLine("No weather data was returned.\nCheck location and try again\nor X to quit.");
+                        Console.WriteLine("No weather data was returned. Check location and try again.");
+                        Console.WriteLine("Press any key to continue.");
+                        Console.ReadKey();
                         doItAgain = true;
-                    }
+                    } 
                     else
                     {
+                        forecast.City = weather.resolvedAddress;
                         doItAgain = false;
                     }
                 }
                 else
                 {
                     doItAgain = false;
-                    city = String.Empty;
+                    forecast.City = String.Empty;
                 }
             } while (doItAgain == true);
 
-            return city;
+            return forecast.City;
         }
     
-
-           
     }
 }
