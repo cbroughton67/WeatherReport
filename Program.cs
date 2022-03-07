@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using WeatherApp.Classes;
 //using System.Net.Http;
 //using Newtonsoft.Json.Linq;
 //using Newtonsoft.Json;
@@ -12,10 +13,13 @@ namespace WeatherApp
         {
             string selection;
             bool doItAgain = true;
+            string userEmail;
             WeatherReport forecast = new();
             dynamic weather;
             Task<string> pickCity;
-            
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+
             pickCity = SelectCity();
             forecast.City = pickCity.Result;
             
@@ -38,7 +42,6 @@ namespace WeatherApp
                         break;
 
                     case "2":
-                        //Console.WriteLine("\n");
                         weather = await forecast.GetForecast();
                         Display.ShowForecast(weather);
                         doItAgain = true;
@@ -64,6 +67,15 @@ namespace WeatherApp
                         }
                         break;
 
+                    case "5":
+                        weather = await forecast.GetForecast();
+                        userEmail = WeatherMail.GetUserEmail();
+                        if(userEmail.ToUpper() != "X") //if the user didn't bail out before providing email...
+                        {
+                            WeatherMail.SendEmail(userEmail, weather); // send the email
+                        }
+                        doItAgain = true;
+                        break;
 
                     case "X":
                     case "x":
@@ -76,7 +88,6 @@ namespace WeatherApp
                 }
 
             }
-            //while (doItAgain == true);
 
         }
 
