@@ -1,10 +1,10 @@
 WeatherReport
 This console app retrieves weather data from a Web API for the user-supplied location, then offers the user several options for displaying the available data, including:
 
-Current conditions
-14-day forecast
-Previous 14-days of weather data
-Email forecast to a user-provided email address
+*	Current conditions
+*	14-day forecast
+*	Previous 14-days of weather data
+*	Email forecast to a user-provided email address
 
 
 As well as the option to change cities and get weather information for the new locale. 
