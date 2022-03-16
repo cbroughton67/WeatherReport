@@ -108,7 +108,7 @@ namespace WeatherApp
 
                     weather = await forecast.GetForecast();
 
-                    if (weather == null)
+                    if (weather is null)
                     {
                         Console.Clear();
                         Console.WriteLine("No weather data was returned. Check location and try again.");
@@ -118,7 +118,7 @@ namespace WeatherApp
                     } 
                     else
                     {
-                        forecast.City = weather.resolvedAddress;
+                        forecast.City = weather["resolvedAddress"].ToString(); 
                         doItAgain = false;
                     }
                 }

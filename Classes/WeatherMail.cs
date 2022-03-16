@@ -35,9 +35,9 @@ namespace WeatherApp.Classes
                 foreach (var day in forecastData.days) //HTML formatted table data
                 {
                     mail.Body += "<tr><td style=\"padding-right:30px\">" + day.datetime + "</td>" +
-                                     "<td style=\"padding-right:30px\">" + day.tempmax  + "</td>" +
-                                     "<td style=\"padding-right:30px\">" + day.tempmin  + "</td>" +
-                                     "<td style=\"padding-right:30px\">" + day.precipprob + "</td>" +
+                                     "<td style=\"padding-right:30px\">" + day.tempmax  + "F</td>" +
+                                     "<td style=\"padding-right:30px\">" + day.tempmin  + "F</td>" +
+                                     "<td style=\"padding-right:30px\">" + day.precipprob + "%</td>" +
                                      "<td style=\"padding-right:30px\">" + day.conditions + "</td>" +
                                  "</tr>";
                 }
@@ -50,6 +50,7 @@ namespace WeatherApp.Classes
                     smtp.Credentials = new NetworkCredential("weathermonkeyconsole@gmail.com", "CodeLou22");
                     smtp.EnableSsl = true;
                     smtp.Send(mail);
+                    smtp.Dispose();                                         // dispose of smtp object 
                 
                 }
                 // Verify to user that the email was sent. 
@@ -57,7 +58,11 @@ namespace WeatherApp.Classes
                 Console.WriteLine("\n\tPress any key to continue.");
                 Console.ReadKey();
 
+                mail.Dispose();                                             // dispose of mail object
+
             }
+
+            
 
         }
 
@@ -74,13 +79,14 @@ namespace WeatherApp.Classes
             Console.WriteLine("****************************************************************");
             Console.WriteLine();
 
+            Regex regex = new Regex(@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
+
             do
             {
                 Console.WriteLine("Please enter your email address (or X to exit): ");
                 userEmail = Console.ReadLine().Trim();
 
                 //use regex to validate the email format. 
-                Regex regex = new Regex(@"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$");
                 isValid = regex.IsMatch(userEmail);
 
                 if (!isValid)
@@ -102,3 +108,4 @@ namespace WeatherApp.Classes
         }
     }
 }
+

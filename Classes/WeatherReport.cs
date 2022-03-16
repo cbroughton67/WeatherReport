@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 
+
 namespace WeatherApp
 {
     public class WeatherReport
@@ -19,15 +20,20 @@ namespace WeatherApp
             try
             {
                 var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode(); // Throw an exception if error
-                var body = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();                     // Throw an exception if error
+                var body = await response.Content.ReadAsStringAsync();  // assign JSON string to body
 
-                dynamic weather = JsonConvert.DeserializeObject(body);
+                dynamic weather = JsonConvert.DeserializeObject(body);  // deserialize string into JSON object
                 return weather;
             }
             catch (Exception)
             {
                 return null;
+            }
+            finally
+            {
+                client.Dispose();                                       // dispose of http client
+                request.Dispose();
             }
 
         }
@@ -40,15 +46,20 @@ namespace WeatherApp
             try
             {
                 var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode(); // Throw an exception if error
-                var body = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();                     // Throw an exception if error
+                var body = await response.Content.ReadAsStringAsync();  // assign JSON string to body        
 
-                dynamic weather = JsonConvert.DeserializeObject(body);
+                dynamic weather = JsonConvert.DeserializeObject(body);  // deserialize string into a JSON object
                 return weather;
             }
             catch (Exception)
             {
                 return null;
+            }
+            finally
+            {
+                client.Dispose();                                       // dispose of the http client 
+                request.Dispose();
             }
 
         }

@@ -35,7 +35,7 @@ namespace WeatherApp
                     alternate = true;
                 }
 
-                Console.WriteLine(day.datetime + "\t" + day.tempmax + "\t" + day.tempmin + "\t" + day.precipprob + "\t\t" + day.conditions);
+                Console.WriteLine(day.datetime + "\t" + day.tempmax + "F\t" + day.tempmin + "F\t" + day.precipprob + "%\t\t" + day.conditions);
 
             }
 
