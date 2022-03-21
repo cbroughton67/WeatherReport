@@ -23,6 +23,9 @@ Code Louisville Requirements Featured:
 
 *	Visualize data in a graph, chart, or other visual representation of data
 
-*	Implement a regular expression (regex) to ensure a field either a phone number or an email address is always stored and displayed in the same format
+*	Implement a regular expression (regex) to ensure a field either a phone number or an email address is always stored and displayed in the same for*mat
+
+*	Read data from an external file, such as text, JSON, CSV, etc and use that data in your application
+
 
 

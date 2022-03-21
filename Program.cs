@@ -20,19 +20,29 @@ namespace WeatherApp
 
             Console.ForegroundColor = ConsoleColor.Blue;
 
-            pickCity = SelectCity();
-            forecast.City = pickCity.Result;
+            // Set current city to last used location from previous session (if exists)
+            forecast.City = FileIO.ReadLocaleFromFile("Weather.json");
             
+            // if no previously saved city is available, prompt user for one
+            if (forecast.City == String.Empty)
+            {
+                pickCity = SelectCity();
+                forecast.City = pickCity.Result;
+            }
+            
+            // If no default city found and user exited prompt without providing a valid city, set the app to exit
             if(forecast.City == string.Empty)
             {
                 doItAgain = false;
             }
-    
+            
+            // MAIN LOOP
             while (doItAgain == true)
             {
-
+                // display menu
                 selection = Display.CreateMenu(forecast.City);
-
+                
+                // process user's menu selection
                 switch (selection)
                 {
                     case "1":
@@ -94,6 +104,7 @@ namespace WeatherApp
 
         private static async Task<string> SelectCity()
         {
+            // Prompt user for city / location to be used
             bool doItAgain = true;
             WeatherReport forecast = new();
             dynamic weather;
@@ -108,7 +119,7 @@ namespace WeatherApp
 
                     weather = await forecast.GetForecast();
 
-                    if (weather is null)
+                    if (weather is null) // City provided didn't resolve with Web API
                     {
                         Console.Clear();
                         Console.WriteLine("No weather data was returned. Check location and try again.");
@@ -120,6 +131,13 @@ namespace WeatherApp
                     {
                         forecast.City = weather["resolvedAddress"].ToString(); 
                         doItAgain = false;
+
+                        FileIO.Locale locale = new();
+                        locale.City = forecast.City;
+
+                        // Save city to JSON file for next session
+                        FileIO.WriteCityToJSON(locale, "Weather.json");
+
                     }
                 }
                 else
