@@ -11,7 +11,8 @@ This console app retrieves weather data from a Web API for the user-supplied loc
 As well as the option to change cities and get weather information for the new locale. 
 
 Program Requirements: 
-This application requires an internet connection, since it uses data from a Web API
+*	This application requires an internet connection, since it uses data from a Web API
+*	Uses Newtonsoft JSON, which will need to be installed to run the app
 
 Code Louisville Requirements Featured:
 *	You must create at least one class, then create at least one object of that class and populate it with data. You must use or display the data in your application.
