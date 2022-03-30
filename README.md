@@ -5,6 +5,7 @@ This console app retrieves weather data from a Web API for the user-supplied loc
 *	14-day forecast
 *	Previous 14-days of weather data
 *	Email forecast to a user-provided email address
+*	Store last city used to a JSON file and defaults to that city on next run of the app
 
 
 As well as the option to change cities and get weather information for the new locale. 
@@ -23,7 +24,7 @@ Code Louisville Requirements Featured:
 
 *	Visualize data in a graph, chart, or other visual representation of data
 
-*	Implement a regular expression (regex) to ensure a field either a phone number or an email address is always stored and displayed in the same for*mat
+*	Implement a regular expression (regex) to ensure a field either a phone number or an email address is always stored and displayed in the same format
 
 *	Read data from an external file, such as text, JSON, CSV, etc and use that data in your application
 
